@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Solver</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; }
+    input, select, button { padding: 0.5rem; margin: 0.5rem 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>🔢 Math Question Solver</h1>
+  <input id="expression" placeholder="Enter a math expression, e.g. x**2 + 2*x + 1">
+  <select id="mode">
+    <option value="evaluate">Evaluate</option>
+    <option value="algebra">Solve Equation</option>
+    <option value="differentiate">Differentiate</option>
+    <option value="integrate">Integrate</option>
+  </select>
+  <button onclick="solve()">Solve</button>
+  <p><strong>Result:</strong> <span id="result"></span></p>
+
+  <script>
+    async function solve() {
+      const expr = document.getElementById('expression').value;
+      const mode = document.getElementById('mode').value;
+
+      const response = await fetch('/solve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ expression: expr, mode: mode })
+      });
+
+      const data = await response.json();
+      document.getElementById('result').innerText = data.result || data.error;
+    }
+  </script>
+</body>
+</html>
